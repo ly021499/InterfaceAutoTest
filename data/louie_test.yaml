@@ -1,0 +1,27 @@
+- config:
+    valueable:
+    environment:
+      fat:
+        account: t0331433110
+        password: 4QrcOUm6Wau+VuBX8g+IPg
+      pre:
+        account: t0331433110
+        password: 4QrcOUm6Wau+VuBX8g+IPg
+
+- name: login_platform
+  desc: 【潭州平台】获取登录用户 token
+  url: https://open-fat.shiguangkey.com/api/udb/b2b/workwechat/auth/login
+  method: POST
+  header:
+    content-type: application/x-www-form-urlencoded
+    terminaltype: "4"
+    origin: https://open-pre.shiguangkey.com
+  data:
+    account: $account
+    password: $password
+  extract:
+    pttoken: token
+  check:
+    - in: [status, 0]
+    - equal: [msg: success]
+    - not_equal: [msg: success]
