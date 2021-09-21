@@ -10,9 +10,9 @@ class Config:
 
     SYSTEM = platform.system()
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+    DATA_DIR = os.path.join(BASE_DIR, "data")
     CASE_DIR = os.path.join(BASE_DIR, "tests")
     REPORT_DIR = os.path.join(BASE_DIR, "report")
 
 
-if __name__ == '__main__':
-    print(Config.BASE_DIR)
+

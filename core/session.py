@@ -4,7 +4,6 @@
 # @Desc  : HTTP请求方法
 from utils.logger import log
 import requests
-import json
 import time
 
 

@@ -5,24 +5,6 @@
 import jsonpath
 import json
 from string import Template
-from core.config.config_log import logger
-
-log = logger
-
-
-def replace_data(raw_var, global_data):
-    raw_var = str(raw_var)
-
-    if not isinstance(raw_var, str):
-        raise TypeError('raw_var must be str！')
-
-    template = Template(raw_var)
-    data = template.safe_substitute(global_data)
-    try:
-        data = json.loads(data)
-    except:
-        data = eval(data)
-    return data
 
 
 def quick_request(data, **kwargs):

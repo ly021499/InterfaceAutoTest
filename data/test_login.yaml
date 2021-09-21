@@ -21,7 +21,7 @@
     password: $password
   extract:
     pttoken: token
-  check:
-    - in: [status, 0]
+  validate:
+    - in: {status: 0}
     - equal: [msg: success]
     - not_equal: [msg: success]

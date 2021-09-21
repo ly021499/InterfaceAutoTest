@@ -1,9 +1,30 @@
 #!/usr/bin/python 
 # @Time  : 2021/9/17 17:35
 # @Desc  : 工具函数
-from config import Config
 import jsonpath
+import json
 import os
+from string import Template
+from config import Config
+
+
+def replace_data(raw_var, global_data):
+    """
+    数据替换方法
+    :param raw_var: str, 原字符串对象，例如dict类型的请求参数转换后的str类型数据
+    :param global_data: dict, 字典类型，替换的数据，例如公共字典或其他
+    :return:
+    """
+    if not isinstance(raw_var, str):
+        raise TypeError('raw_var must be str！')
+
+    template = Template(raw_var)
+    data = template.safe_substitute(global_data)
+    try:
+        data = json.loads(data)
+    except:
+        data = eval(data)
+    return data
 
 
 def get_target_value(obj, key):
@@ -60,3 +81,16 @@ def open_allure():
     if 'win' in Config.SYSTEM:
         open_allure_cmd = "allure open {}".format(summary_dir)
         os.system(open_allure_cmd)
+
+
+if __name__ == '__main__':
+    raw = {
+        'username': '$username',
+        'password': '$password'
+    }
+    var = {
+        'username': 'LOUIE',
+        'password': '123456'
+    }
+    new = replace_data(str(raw), var)
+    print(new)
