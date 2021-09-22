@@ -29,7 +29,7 @@ class HttpResponse(object):
             try:
                 value = getattr(self.resp_obj, key)
             except AttributeError:
-                err_msg = "ResponseObject does not have attribute: {}".format(key)
+                err_msg = "responseObject does not have attribute: {}".format(key)
                 log.error(err_msg)
                 raise Exception(err_msg)
 
@@ -57,23 +57,8 @@ class HttpResponse(object):
 
         extract_mapping = {}
         for key, field in extractors.items():
-            field_value = self._search_jmespath(field)
+            field_value = get_target_value(obj=self.resp_obj_meta, key=field)
             extract_mapping[key] = field_value
 
-        log.info(f"Extract Mapping: {extract_mapping}")
-        return extract_mapping
-
-    def search_jsonpath(self, extractors):
-
-        if not extractors:
-            return {}
-
-        extract_mapping = {}
-
-        for key, value in extractors.items():
-
-            field_value = get_target_value(obj=self.resp_obj_meta, key=value)
-            extract_mapping[key] = field_value
-
-        log.info(f"Extract Mapping: {extract_mapping}")
+        log.info(f"extract mapping: {extract_mapping}")
         return extract_mapping

@@ -8,6 +8,7 @@ import os
 
 class Config:
 
+    ENV = 'prod'
     SYSTEM = platform.system()
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
     DATA_DIR = os.path.join(BASE_DIR, "data")

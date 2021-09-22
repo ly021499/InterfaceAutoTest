@@ -35,7 +35,7 @@ def get_target_value(obj, key):
     :return:
     """
     if not isinstance(obj, dict):
-        return "TypeError: unexpected types, Only Supporte Dictionary"
+        return "TypeError: unexpected types, Only Supported Dictionary"
 
     # 当值不唯一时，通过.分割字符串，取对应索引的值
     if "." in str(key):
