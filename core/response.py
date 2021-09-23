@@ -2,7 +2,7 @@
 # @Time  : 2021/9/17 16:13
 # @Desc  : 处理HTTP响应信息
 from utils.logger import log
-from utils.tools import get_target_value
+from utils import tools
 import jmespath
 
 
@@ -57,8 +57,9 @@ class HttpResponse(object):
 
         extract_mapping = {}
         for key, field in extractors.items():
-            field_value = get_target_value(obj=self.resp_obj_meta, key=field)
+            field_value = tools.get_target_value(obj=self.resp_obj_meta, key=field)
             extract_mapping[key] = field_value
 
         log.info(f"extract mapping: {extract_mapping}")
         return extract_mapping
+
