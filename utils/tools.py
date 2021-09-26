@@ -5,7 +5,7 @@ import jsonpath
 import json
 import os
 from string import Template
-from config import Config
+import config
 
 
 def replace_data(raw_var, global_data):
@@ -55,8 +55,8 @@ def copy_environment():
     每次运行复制一份environment
     :return:
     """
-    raw_file_path = os.path.join(Config.REPORT_DIR, 'environment.properties')
-    new_file_path = os.path.join(Config.REPORT_DIR, 'summary/environment.properties')
+    raw_file_path = os.path.join(config.REPORT_DIR, 'environment.properties')
+    new_file_path = os.path.join(config.REPORT_DIR, 'summary/environment.properties')
 
     with open(raw_file_path, 'rb+') as f:
         data = f.read()
@@ -71,14 +71,14 @@ def open_allure():
     """
     copy_environment()
 
-    output_dir = os.path.join(Config.REPORT_DIR, 'output')
-    summary_dir = os.path.join(Config.REPORT_DIR, 'summary')
+    output_dir = os.path.join(config.REPORT_DIR, 'output')
+    summary_dir = os.path.join(config.REPORT_DIR, 'summary')
 
     generate_allure_cmd = "allure generate {} -o {} --clean".format(output_dir, summary_dir)
     os.system(generate_allure_cmd)
 
     # 当前环境下如果为开发环境，则自动打开 allure 报告
-    if 'win' in Config.SYSTEM:
+    if 'win' in config.SYSTEM:
         open_allure_cmd = "allure open {}".format(summary_dir)
         os.system(open_allure_cmd)
 

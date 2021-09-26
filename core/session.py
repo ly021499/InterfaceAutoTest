@@ -26,7 +26,6 @@ class HttpRequest(object):
         http 请求：
         :param url: 请求地址
         :param method: 请求方法
-        :param headers: 请求头部
         :param name: 接口名称
         :return: response: 响应体
         """
