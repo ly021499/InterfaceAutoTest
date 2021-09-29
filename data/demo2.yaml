@@ -1,0 +1,22 @@
+- config:
+    fat:
+      account: sssss
+      password: sssss
+    prod:
+      account: xxxxx
+      password: xxxxx
+
+- name: 获取登录用户 token
+  url: https://www.baidu.com/api/login
+  method: POST
+  request:
+    headers:
+      content-type: application/x-www-form-urlencoded
+    data:
+      account: $account
+      password: $password
+  extract:
+    token: token
+  validate:
+    - equal: [msg, success]
+    - not_in: [statuss]

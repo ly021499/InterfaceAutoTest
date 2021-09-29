@@ -1,24 +1,22 @@
 - config:
     fat:
-      account: t0331433110
-      password: 4QrcOUm6Wau+VuBX8g+IPg
+      account: sssss
+      password: sssss
     prod:
-      account: m15131424735
-      password: xu9o8rj118541WgRNyP7DA
+      account: xxxxx
+      password: xxxxx
 
 - name: 获取登录用户 token
-  url: https://open.shiguangkey.com/api/udb/login/standard
+  url: https://www.baidu.com/api/login
   method: POST
   request:
     headers:
       content-type: application/x-www-form-urlencoded
-      terminaltype: "4"
     data:
       account: $account
       password: $password
   extract:
     token: token
-    jack: nickname
   validate:
     - equal: [msg, success]
     - not_in: [statuss]
