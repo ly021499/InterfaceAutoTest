@@ -1,6 +1,7 @@
 #!/usr/bin/python
-# @Time  : 2020/3/25 16:01
-# @Desc  : 日志文件
+# @Time    : 2020/3/25 15:58
+# @Author : JACK
+# @Desc  : 日志输出
 import logging
 import time
 from logging.handlers import TimedRotatingFileHandler
@@ -99,6 +100,7 @@ class Logger(object):
 
 
 log = Logger()
+
 
 if __name__ == '__main__':
     log.info("12345")

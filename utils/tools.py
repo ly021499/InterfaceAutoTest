@@ -1,10 +1,12 @@
-#!/usr/bin/python 
-# @Time  : 2021/9/17 17:35
+#!/usr/bin/python
+# @Time    : 2020/3/25 15:58
+# @Author : JACK
 # @Desc  : 工具函数
+from string import Template
 import jsonpath
 import json
 import os
-from string import Template
+import shutil
 import config
 
 
@@ -50,47 +52,32 @@ def get_target_value(obj, key):
     return field_value
 
 
-def copy_environment():
-    """
-    每次运行复制一份environment
-    :return:
-    """
-    raw_file_path = os.path.join(config.REPORT_DIR, 'environment.properties')
-    new_file_path = os.path.join(config.REPORT_DIR, 'summary/environment.properties')
-
-    with open(raw_file_path, 'rb+') as f:
-        data = f.read()
-    with open(new_file_path, 'wb+') as f2:
-        f2.write(data)
-
-
 def open_allure():
     """
     运行完后，自动打开 allure 报告
     :return:
     """
-    copy_environment()
+
+    # 复制environment.properties文件
+    raw_file_path = os.path.join(config.REPORT_DIR, 'environment.properties')
+    new_file_path = os.path.join(config.REPORT_DIR, 'output/environment.properties')
+
+    shutil.copy(raw_file_path, new_file_path)
 
     output_dir = os.path.join(config.REPORT_DIR, 'output')
     summary_dir = os.path.join(config.REPORT_DIR, 'summary')
 
+    if not os.path.exists(output_dir):
+        os.mkdir(output_dir)
+    if not os.path.exists(summary_dir):
+        os.mkdir(summary_dir)
+
     generate_allure_cmd = "allure generate {} -o {} --clean".format(output_dir, summary_dir)
     os.system(generate_allure_cmd)
 
-    # 当前环境下如果为开发环境，则自动打开 allure 报告
-    if 'win' in config.SYSTEM:
-        open_allure_cmd = "allure open {}".format(summary_dir)
-        os.system(open_allure_cmd)
+    open_allure_cmd = "allure open {}".format(summary_dir)
+    os.system(open_allure_cmd)
 
 
 if __name__ == '__main__':
-    raw = {
-        'username': '$username',
-        'password': '$password'
-    }
-    var = {
-        'username': 'LOUIE',
-        'password': '123456'
-    }
-    new = replace_data(str(raw), var)
-    print(new)
+    open_allure()

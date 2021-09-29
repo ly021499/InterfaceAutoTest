@@ -1,70 +1,58 @@
-#!/usr/bin/python 
-# @Time  : 2020/9/19 10:13
+#!/usr/bin/python
+# @Time  : 2020/4/20 14:37
 # @Author: JACK
-# @Desc  : 断言方法
-from utils import tools
+# @Desc  : 断言封装
 from utils.logger import log
+from utils import tools
 
 
 class Validator(object):
 
-    def __init__(self, response, validator):
-        self.validators = validator
-        self.response = response
+    def __init__(self, response):
+        self.resp_obj = response
 
-    def validate(self):
+    def validate(self, validators):
 
-        if not self.validators and not isinstance(self.validators, (list, dict)):
-            return "Validator must be ff dict or list type"
+        if not isinstance(validators, list):
+            return "Validator must be list type"
 
         log.info("Start to validate response.")
 
-        for validator in self.validators:
-            for comparator, expected in validator.items():
-                if comparator in ['eq', 'equal']:
-                    assert expected[1] == tools.get_target_value(obj=self.response, key=expected[0])
-                elif comparator in ['notEqual', 'not_equal']:
-                    assert expected[1] != tools.get_target_value(obj=self.response, key=expected[0])
-                elif comparator == 'in':
-                    assert expected[0] in str(self.response)
-                elif comparator in ['notIn', 'not_in']:
-                    assert expected[0] not in str(self.response)
-                log.info("Assert result: [Passed]  comparator: {}  expected: {} ".format(comparator, expected))
+        for validator in validators:
 
-                # if isinstance(expected, dict):
-                #     for key, expected_value in expected.items():
-                #         if comparator in ['eq', 'equal']:
-                #             assert expected_value == tools.get_target_value(obj=self.response, key=key)
-                #         elif comparator in ['notEqual', 'not_equal']:
-                #             assert expected_value != tools.get_target_value(obj=self.response, key=key)
-                # elif isinstance(validator, list):
-                #     if comparator == 'in':
-                #         assert expected in str(self.response)
-                #     elif comparator in ['notIn', 'not_in']:
-                #         assert expected not in str(self.response)
-                # log.info("Assert result: [Passed]  comparator: {}  expected: {} ".format(comparator, expected))
+            for comparator, expected in validator.items():
+
+                try:
+
+                    if comparator in ['equal', 'eq', 'Equal']:
+                        assert expected[1] == tools.get_target_value(obj=self.resp_obj, key=expected[0])
+
+                    elif comparator in ['not_equal', 'not_eq', 'notEqual']:
+                        assert expected[1] != tools.get_target_value(obj=self.resp_obj, key=expected[0])
+
+                    elif comparator in ['in', 'In']:
+                        assert expected[0] in str(self.resp_obj)
+
+                    elif comparator in ['not_in', 'notIn']:
+                        assert expected[0] not in str(self.resp_obj)
+
+                    log.info(f"assert result: [Passed]\n"
+                             f"comparator: {comparator}\n"
+                             f"expected: {expected[-1]}\n"
+                             )
+                except AssertionError as ex:
+                    log.error(f"assert result: [Failed]\n"
+                              f"comparator: {comparator}\n"
+                              f"expected: {expected[-1]}\n"
+                              )
+                    raise ex
 
 
 if __name__ == '__main__':
-    res = {
-    "traceId": "9b7539b8dcdf4a529f8cb62fc4760e17",
-    "status": "0",
-    "msg": "success",
-    "data": {
-        "user": {
-            "uid": 2338240,
-            "mobile": "15131424735",
-            "account": "m15131424735",
-            "nickname": "Jack",
-            "headImg": "https://res.shiguangkey.com/file/202007/20/20200720192553054460756.jpg",
-            "openId": "",
-            "newRegister": False,
-            "needBindPhone": False,
-            "showAccountList": False
-        },
-        "token": "eb93a0490623adc098e540d4955951df"
-    }
-    }
-    validators = [{'equal': ['msg', 'success']}, {'not_in': ['statuss']}]
-    va = Validator(validators, res)
-    va.validate()
+    validator = [{'Equal': ['status', '0']}, {'not_in': ['status1']}]
+
+    response = {'traceId': '46734a95898e412c9519a4b901abdc30',
+                'status': '0',
+                'msg': 'success'
+                }
+    Validator(response).validate(validator)

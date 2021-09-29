@@ -1,13 +1,12 @@
 - config:
     fat:
-      account: t0331433110
+      account: t033143311221
       password: 4QrcOUm6Wau+VuBX8g+IPg
     prod:
       account: m15131424735
       password: xu9o8rj118541WgRNyP7DA
 
-- name: login_platform
-  desc: 【潭州平台】获取登录用户 token
+- name: 获取登录用户 token
   url: https://open.shiguangkey.com/api/udb/login/standard
   method: POST
   request:
@@ -23,15 +22,19 @@
     - equal: [msg, success]
     - not_in: [statuss]
 
-- name: qryContractsByUserId
-  desc: 【潭州平台】我的合同
-  url: https://open.shiguangkey.com/api/taoli/student/contract/qryContractsByUserId
+- name: 查询我的作业
+  url: https://open.shiguangkey.com/api/taoli/student/homework/listHomeworkClassByPage
   method: GET
   request:
     headers:
       token: $token
       terminaltype: "4"
+    params:
+      pageIndex: 1
+      pageSize: 10
   extract:
   validate:
     - equal: [status, "0"]
-    - not_in: [statuss]
+    - equal:
+        - msg
+        - 成功

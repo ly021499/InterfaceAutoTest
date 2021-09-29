@@ -1,4 +1,7 @@
 #!/usr/bin/python
+# @Time    : 2020/3/25 15:58
+# @Author : JACK
+# @Desc  : 发送邮件
 import os
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication

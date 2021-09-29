@@ -1,19 +1,28 @@
 #!/usr/bin/python
-# @Time  : 2021/9/17 16:43
+# @Time  : 2020/9/17 16:43
 # @Author: JACK
 # @Desc  : 程序执行入口
 from utils import tools
 from utils.logger import log
-from config import Config
+import config
 import os
 import pytest
 
 
-def run(path):
-    output_dir = os.path.join(Config.REPORT_DIR, 'output')
-    options = [output_dir, "--clean-alluredir", 'no:warnings', path]
-    log.info(options)
-    log.info(" = " * 8 + " 程序开始运行， 测试开始 " + " = " * 8)
+def run(path=None):
+    if not path:
+        path = config.CASE_DIR
+
+    output_dir = os.path.join(config.REPORT_DIR, 'output')
+    options = ["--alluredir={}".format(output_dir), "--clean-alluredir", path]
+    log.info("options list: {}".format(options))
+
+    log.info(" = " * 8 + " Process started, Running tests  " + " = " * 8)
     pytest.main(options)
-    log.info(" = " * 8 + " 程序停止运行， 测试结束 " + " = " * 8)
+    log.info(" = " * 8 + " Process finished, Testing is completed " + " = " * 8)
+
     tools.open_allure()
+
+
+if __name__ == '__main__':
+    run()

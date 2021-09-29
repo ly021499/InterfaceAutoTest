@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # @Time    : 2020/3/25 15:58
 # @Author  : JACK
-# @Desc  : 存放全局变量
+# @Desc  : 全局变量
 from utils import factory
 
 

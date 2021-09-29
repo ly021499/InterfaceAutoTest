@@ -1,7 +1,7 @@
 #!/usr/bin/python 
-# @Time  : 2021/5/20 17:39
+# @Time  : 2020/5/20 17:39
 # @Author: JACK
-# @Desc  : 数据操作文件
+# @Desc  : 数据加载
 import yaml
 import os
 import config
@@ -23,28 +23,28 @@ def load_folder(folder):
 
 
 def load_yaml(filepath):
+    """
+    读取指定YAML文件数据
+    :param filepath:
+    :return:
+    """
+    filepath = os.path.join(config.DATA_DIR, filepath)
     with open(filepath, encoding='utf-8') as file:
         try:
             stream = yaml.safe_load(file)
-        except yaml.YAMLError as ex:
-            log.error(str(ex))
-            raise ex
+        except yaml.YAMLError as e:
+            raise e
 
         return stream
 
 
 def parser_config(config_var):
     variables = config_var.get(config.ENV.lower())
+
     const = Const.global_val()
     const.update(**variables)
+
     log.info("parser config variables: {}".format(variables))
     return const
 
 
-if __name__ == '__main__':
-    import config
-    import os
-    yaml_path = os.path.join(config.DATA_DIR, 'login_account.yaml')
-    data = load_yaml(yaml_path)
-    path_list = load_folder(config.DATA_DIR)
-    print(path_list)
