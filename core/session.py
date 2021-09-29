@@ -34,7 +34,7 @@ class HttpRequest(object):
         method = method.upper()
 
         if method not in method_list:
-            log.error("The request method is not supported!")
+            log.error("the request method is not supported!")
             raise BaseException
 
         log.info("processed request: {}".format(name))

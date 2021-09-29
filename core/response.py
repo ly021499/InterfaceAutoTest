@@ -29,7 +29,7 @@ class HttpResponse(object):
             try:
                 value = getattr(self.resp_obj, key)
             except AttributeError:
-                err_msg = "Response object does not have attribute: {}".format(key)
+                err_msg = "response object does not have attribute: {}".format(key)
                 log.error(err_msg)
                 raise Exception(err_msg)
 
@@ -51,6 +51,8 @@ class HttpResponse(object):
 
     def extract_value(self, extractors):
 
+        log.info("start to extract from response object.")
+
         if not extractors:
             return {}
 
@@ -66,9 +68,9 @@ class HttpResponse(object):
     def validate(self, validators):
 
         if not isinstance(validators, list):
-            return "Validator must be list type"
+            return "validator must be list type"
 
-        log.info("Start to validate response.")
+        log.info("start to validate response.")
 
         for validator in validators:
 
@@ -98,21 +100,3 @@ class HttpResponse(object):
                               f"expected: {expected[-1]}\n"
                               )
                     raise ex
-
-
-if __name__ == '__main__':
-    response = {'traceId': '46734a95898e412c9519a4b901abdc30',
-                'status': '0',
-                'msg': 'success',
-                'token': '98e412c9519a4b901abdc30',
-                'nickname': 'sara',
-                'data': {
-                    'nickname': 'link',
-                    'jack': {
-                        'nickname': 'jack'
-                    }
-                }
-                }
-    extractor = {'token': 'token', 'nickname': 'nickname-1'}
-    res = HttpResponse(response)
-    res.extract_value(extractor)

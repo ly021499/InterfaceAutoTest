@@ -3,7 +3,6 @@
 # @Author: JACK
 # @Desc  : 函数封装
 from utils import tools
-from core.validator import Validator
 from core import loader
 from core.response import HttpResponse
 from core.session import HttpRequest
