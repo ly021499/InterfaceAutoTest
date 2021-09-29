@@ -27,6 +27,15 @@ class HTTP(object):
         pass
 
 
-dic = {'a': 'b', 'v': 'b'}
-for k,v in dic.items():
-    print({k, v})
+def test_pri(self):
+    assert 0 == 0
+
+
+TestSequense = type('TestSequense', (object,), {})
+setattr(TestSequense, 'test_pri', test_pri)
+print(TestSequense.__dict__)
+
+
+if __name__ == '__main__':
+    import pytest
+    pytest.main([__file__, '--co'])

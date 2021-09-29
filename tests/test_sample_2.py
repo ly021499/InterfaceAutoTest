@@ -8,8 +8,8 @@ class TestSample2:
 
     @allure.title("查询我的信息")
     def test_query_mine(self):
-        client.quick_request('query_mine.yaml')
+        client.run_tests('query_mine.yaml')
 
     @allure.title("查询我的订单")
     def test_query_order(self):
-        client.quick_request('query_order.yaml')
+        client.run_tests('query_order.yaml')

@@ -4,6 +4,7 @@
 # @Desc  : HTTP请求处理
 from utils.logger import log
 import requests
+import json
 from requests import exceptions
 import time
 
@@ -37,10 +38,14 @@ class HttpRequest(object):
             log.error("the request method is not supported!")
             raise BaseException
 
-        log.info("processed request: {}".format(name))
-        log.info("> [{method}] {url}".format(method=method, url=url))
-        # log.info("> headers: {headers}".format(headers=headers))
-        log.info("> kwargs: {kwargs}".format(kwargs=kwargs))
+        identifier = ' = ' * 6
+        log.info(f"processed request: {name}")
+        log.info(f"{identifier} request detail {identifier}")
+        log.info(f"> [{method}] {url}")
+        kwarg = kwargs.copy()
+        if kwarg.get('headers'):
+            log.info(f"> headers: {kwarg.pop('headers')}")
+        log.info(f"parameter: \n{json.dumps(kwarg, indent=4, ensure_ascii=False)}")
 
         kwargs.setdefault("timeout", 10)
 
@@ -50,7 +55,7 @@ class HttpRequest(object):
 
         try:
             response.raise_for_status()
-            log.info('> response json: %s' % response.json())
+            log.info(f'> = = = = response detail = = = = \n{json.dumps(response.json(), indent=4, ensure_ascii=False)} ')
         except (exceptions.MissingSchema, exceptions.InvalidSchema, exceptions.InvalidURL):
             raise
         else:
@@ -76,7 +81,5 @@ if __name__ == '__main__':
     res = HttpRequest().send_request(methods, urls, name="LOUIE测试接口", headers=header, data=data)
     from core.response import HttpResponse
     r = HttpResponse(res)
-    print(r.resp_obj_meta)
     from utils.tools import get_target_value
     value = get_target_value(obj=r.resp_obj_meta, key='msg')
-    print(value)
