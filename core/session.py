@@ -45,7 +45,7 @@ class HttpRequest(object):
         kwarg = kwargs.copy()
         if kwarg.get('headers'):
             log.info(f"> headers: {kwarg.pop('headers')}")
-        log.info(f"parameter: \n{json.dumps(kwarg, indent=4, ensure_ascii=False)}")
+        log.info(f"> parameter: \n{json.dumps(kwarg, indent=4, ensure_ascii=False)}")
 
         kwargs.setdefault("timeout", 10)
 
@@ -55,7 +55,7 @@ class HttpRequest(object):
 
         try:
             response.raise_for_status()
-            log.info(f'> = = = = response detail = = = = \n{json.dumps(response.json(), indent=4, ensure_ascii=False)} ')
+            log.info(f'{identifier} response detail {identifier} \n{json.dumps(response.json(), indent=4, ensure_ascii=False)} ')
         except (exceptions.MissingSchema, exceptions.InvalidSchema, exceptions.InvalidURL):
             raise
         else:
@@ -78,8 +78,6 @@ if __name__ == '__main__':
         'account': 'm15131424735',
         'password': 'xu9o8rj118541WgRNyP7DA'
     }
-    res = HttpRequest().send_request(methods, urls, name="LOUIE测试接口", headers=header, data=data)
-    from core.response import HttpResponse
-    r = HttpResponse(res)
-    from utils.tools import get_target_value
-    value = get_target_value(obj=r.resp_obj_meta, key='msg')
+    res = HttpRequest().send_request(method=methods, url=urls, name="LOUIE测试接口", headers=header, data=data)
+    # from core.response import HttpResponse
+    # r = HttpResponse(res)
