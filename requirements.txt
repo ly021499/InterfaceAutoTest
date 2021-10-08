@@ -1,0 +1,7 @@
+requests==2.26.0
+pytest==5.4.3
+jmespath==0.9.5
+jsonpath==0.82
+Faker==8.13.2
+pymysql==1.0.2
+PyYAML==5.4.1

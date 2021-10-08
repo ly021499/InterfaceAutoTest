@@ -1,4 +1,7 @@
 #!/usr/bin/python
+# @Time    : 2020/3/25 15:58
+# @Author  : JACK
+# @Desc  : 随机数据生成库
 import random
 import string
 import time

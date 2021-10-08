@@ -1,31 +1,38 @@
 #!/usr/bin/python 
 # @Time  : 2021/5/18 21:27
 # @Author: JACK
-# @Desc  : 文件描述信息
+# @Desc  : 函数封装
 from utils import tools
-from core.validator import Validator
 from core import loader
 from core.response import HttpResponse
 from core.session import HttpRequest
 
 
-def quick_request(filename):
-    file_data = loader.load_yaml(filename)
-    config = file_data.pop(0)['config']
-    const = loader.parser_config(config)
-    for i in file_data:
-        request = tools.replace_data(str(i.get('request')), const)
-        response = HttpRequest().send_request(i['url'], i['method'], i.get('name'), **request)
-        res_obj = HttpResponse(response)
-        validator = i.get('validate')
-        Validator(response.json(), validator).validate()
-        extract = i.get('extract')
-        extract_variable = res_obj.extract_value(extract)
-        const.update(**extract_variable)
+def run_tests(filename):
+    tests_dict = loader.load_yaml(filepath=filename)
+    config_data = tests_dict.pop(0)['config']
+    config_dict = loader.parser_config(config_data)
+    for test in tests_dict:
+        # 获取HTTP请求常用数据
+        method, url, name = test['method'], test['url'], test['name']
+        request = tools.replace_data(str(test['request']), config_dict)
+        # 发起HTTP请求
+        response = HttpRequest().send_request(method=method, url=url, name=name, **request)
+        # 处理响应内容
+        resp = HttpResponse(response)
+        # 断言处理
+        validator = test['validate']
+        if validator:
+            resp.validate(validator)
+        # 提取数据
+        extractor = test.get('extract')
+        if extractor:
+            extract_variable = resp.extract_value(extractor)
+            config_dict.update(extract_variable)
 
 
 if __name__ == '__main__':
-    from config import Config
+    import config
     import os
-    yaml_path = os.path.join(Config.DATA_DIR, 'login_account.yaml')
-    quick_request(yaml_path)
+    yaml_path = os.path.join(config.DATA_DIR, 'query_contract.yaml')
+    run_tests(yaml_path)

@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # @Time    : 2020/3/25 15:58
 # @Author  : JACK
-# @Desc  : 数据库操作
+# @Desc  : 数据库交互
 from utils.logger import log
 import pymysql
 

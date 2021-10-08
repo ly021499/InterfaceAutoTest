@@ -1,9 +1,12 @@
 #!/usr/bin/python
+# @Time    : 2020/3/25 15:58
+# @Author : JACK
+# @Desc  : 发送邮件
 import os
 from email.mime.multipart import MIMEMultipart
 from email.mime.application import MIMEApplication
 from email.mime.text import MIMEText
-from config import Config
+import config
 from utils.logger import log
 from smtplib import SMTP
 
@@ -44,11 +47,11 @@ class Mail(object):
         定义邮件附件
         :return:
         """
-        list_dir = os.listdir(Config.REPORT_DIR)
+        list_dir = os.listdir(config.REPORT_DIR)
         # 根据文件的修改时间进行排序
-        list_dir.sort(key=lambda x: os.path.getmtime(Config.REPORT_DIR + "\\" + x))
+        list_dir.sort(key=lambda x: os.path.getmtime(config.REPORT_DIR + "\\" + x))
         # 构建文件路径，-1代表最新时间的文件
-        att_file_path = os.path.join(Config.REPORT_DIR, list_dir[-1])
+        att_file_path = os.path.join(config.REPORT_DIR, list_dir[-1])
         att_file = MIMEApplication(open(att_file_path, 'rb').read())
         att_file.add_header('Content-Disposition', 'attachment', filename=self.filename)
         self.mmp.attach(att_file)
